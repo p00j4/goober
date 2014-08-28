@@ -25,11 +25,24 @@ class Goober(Plugin):
                           action='store_true',
                           help="print failed test paths: %s" %
                           (self.help()))
+        parser.add_option('--goober-prefix',
+                          action='store',
+                          type='string',
+                          dest='prefix',
+                          help="Environment variables to prepend to goober's output. For example, --goober-prefix='LOCALE' will attach 'LOCALE=<os.environ.get('LOCALE')> to 'nosetests -v --goober'")
         super(Goober, self).options(parser, env)
-        
 
     def configure(self, options, conf):
         super(Goober, self).configure(options, conf)
+        self.prefix = ''
+        if not options.prefix:
+            return
+        self.env_vars = options.prefix.split(',')
+        if self.env_vars:
+            self.assemble_prefix()
+
+    def assemble_prefix(self):
+        self.prefix += ' '.join(["%s=%s" % (var, os.environ.get(var)) for var in self.env_vars if os.environ.get(var) is not None]) + ' '
 
     def get_output(self, test):
         try:
@@ -54,5 +67,8 @@ class Goober(Plugin):
             problems.append(self.get_output(failure[0])) 
 
         print "YOU SHOULD RE-RUN:"
-        print "nosetests -v --goober " + ' '.join(problems)
+        msg = "nosetests -v --goober "
+        if self.prefix:
+            msg = self.prefix + msg + '--goober-prefix=' + ','.join(self.env_vars) + ' '
+        print msg + ' '.join(problems)
         
