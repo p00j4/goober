@@ -55,6 +55,27 @@ class Goober(Plugin):
         path += ".py:%s" % testname
         return path
 
+    def determine_test_path(self, problem):
+        """
+        When we receive a multiprocess failure/error object, there is a stacktrace and an id. The id is a string representation of the path to the test that failed. But, no determination is made about whether the test that failed was part of a test class, or a standalone test.
+
+        We will break that id into pieces, splitting on '.' - we will re-assemble that id as a path, from the begnning, and search for it in the stacktrace. The first time we don't find it marks the end of the file path, and the beginning of the name of the test class/specific test. We keep the dots separating that part.
+        """
+        test, trace = problem
+        try:
+            test_id = test.test
+        except AttributeError:
+            test_id = test._id
+
+        test_bits = str(test_id).split('.')
+        path = ''
+        while path in trace:
+            bit = test_bits.pop(0)
+            path += bit + "/"
+        path = path.rstrip('/') + '.py'
+        path = path + ':' + '.'.join(test_bits)
+        return path
+
     def finalize(self, result):
         if not result.errors and not result.failures:
            print "ALL GOOD!"
@@ -62,9 +83,9 @@ class Goober(Plugin):
 
         problems = []
         for error in result.errors:
-            problems.append(self.get_output(error[0])) 
+            problems.append(self.determine_test_path(error)) 
         for failure in result.failures:
-            problems.append(self.get_output(failure[0])) 
+            problems.append(self.determine_test_path(failure)) 
 
         print "YOU SHOULD RE-RUN:"
         msg = "nosetests -v --goober "
