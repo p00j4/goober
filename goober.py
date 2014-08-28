@@ -13,6 +13,7 @@ class Goober(Plugin):
     After a multiprocess test run, print out a one-line command that will rerun all the failed / error'd tests
     """
     name = "goober"
+    score = 2
     enableOpt = "goober"
     activate = "--goober"
 
@@ -21,9 +22,14 @@ class Goober(Plugin):
         
     def options(self, parser, env):
         parser.add_option('--goober',
-                          default=False,
+                          action='store_true',
                           help="print failed test paths: %s" %
                           (self.help()))
+        super(Goober, self).options(parser, env)
+        
+
+    def configure(self, options, conf):
+        super(Goober, self).configure(options, conf)
 
     def get_output(self, test):
         try:
@@ -48,5 +54,5 @@ class Goober(Plugin):
             problems.append(self.get_output(failure[0])) 
 
         print "YOU SHOULD RE-RUN:"
-        print "nosetests -v " + ' '.join(problems)
+        print "nosetests -v --goober " + ' '.join(problems)
         
