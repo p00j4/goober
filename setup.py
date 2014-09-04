@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = "goober",
-    version = "0.1.3",
+    version = "0.1.4",
     packages = find_packages(),
     description = "List tests with errors/failures after a multiprocess nosetest run.",
     author = "Dustin Keitel",

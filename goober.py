@@ -63,7 +63,7 @@ class Goober(Plugin):
         """
         test, trace = problem
         try:
-            test_id = test.test
+            test_id = test.id()
         except AttributeError:
             test_id = test._id
 
