@@ -101,7 +101,6 @@ class Goober(Plugin):
         msg = "nosetests -v --goober "
         if self.prefix:
             msg = self.prefix + msg + '--goober-prefix=' + ','.join(self.env_vars) + ' '
-
         if self.extra_options:
             msg += str(self.extra_options) + ' '
         
