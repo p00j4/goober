@@ -40,8 +40,10 @@ class Goober(Plugin):
 
     def configure(self, options, conf):
         super(Goober, self).configure(options, conf)
-        self.extra_options = options.extra.replace(',', ' ')
         self.prefix = ''
+        self.extra_options = ''
+        if options.extra:
+            self.extra_options = (options.extra).replace(',', ' ')
 
         if not options.prefix:
             return
