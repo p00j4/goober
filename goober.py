@@ -30,6 +30,10 @@ class Goober(Plugin):
                           type='string',
                           dest='prefix',
                           help="Environment variables to prepend to goober's output. For example, --goober-prefix='LOCALE' will attach 'LOCALE=<os.environ.get('LOCALE')> to 'nosetests -v --goober'")
+        parser.add_option('--goober-extra',
+                          action='store',
+                          help="append additional nose options to goober's output (give comma separated). For example: --goober-extra=--with-xunit,--with-xcover,--xcoverage-file=coverage.xml")
+
         super(Goober, self).options(parser, env)
 
     def configure(self, options, conf):
@@ -40,6 +44,8 @@ class Goober(Plugin):
         self.env_vars = options.prefix.split(',')
         if self.env_vars:
             self.assemble_prefix()
+        if options.goober_extra:
+            self.extra_options = str(options.goober_extra).replace(","," ")
 
     def assemble_prefix(self):
         self.prefix += ' '.join(["%s=%s" % (var, os.environ.get(var)) for var in self.env_vars if os.environ.get(var) is not None]) + ' '
@@ -91,5 +97,8 @@ class Goober(Plugin):
         msg = "nosetests -v --goober "
         if self.prefix:
             msg = self.prefix + msg + '--goober-prefix=' + ','.join(self.env_vars) + ' '
+        if self.extra_options:
+            msg += str(self.extra_options) + ' '
+        
         print msg + ' '.join(problems)
         
