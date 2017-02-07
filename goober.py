@@ -40,7 +40,7 @@ class Goober(Plugin):
 
     def configure(self, options, conf):
         super(Goober, self).configure(options, conf)
-        self.extra_options = str(options.extra).replace(',', ' ')
+        self.extra_options = options.extra.replace(',', ' ')
         self.prefix = ''
 
         if not options.prefix:
@@ -48,7 +48,6 @@ class Goober(Plugin):
         self.env_vars = options.prefix.split(',')
         if self.env_vars:
             self.assemble_prefix()
-
 
     def assemble_prefix(self):
         self.prefix += ' '.join(["%s=%s" % (var, os.environ.get(var)) for var in self.env_vars if os.environ.get(var) is not None]) + ' '
