@@ -9,10 +9,10 @@ Multiprocess and TestId don't work well together. So, how do we know which tests
 
 This plugin prints out 'nosetests -v' plus the paths to those failing tests. The idea is to make it as easy as possible to just run the troublesome tests from a multiprocess test run.
 
-To Enable:
+**To Enable:**
 - clone the goober repository 
 - cd into the goober repository and run ```pip install -e .```
 
-Usage:
+**Usage:**
 
 ```nosetests --goober --processes=-1 path/to/tests```
