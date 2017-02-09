@@ -103,6 +103,5 @@ class Goober(Plugin):
             msg = self.prefix + msg + '--goober-prefix=' + ','.join(self.env_vars) + ' '
         if self.extra_options:
             msg += str(self.extra_options) + ' '
-        msg += "\""
-        print "YOU SHOULD RE-RUN: "+ msg + ' '.join(problems)
+        print "YOU SHOULD RE-RUN: "+ msg + ' '.join(problems) + "\""
         
