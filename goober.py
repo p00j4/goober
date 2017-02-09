@@ -98,11 +98,11 @@ class Goober(Plugin):
             problems.append(self.determine_test_path(failure)) 
 
 
-        msg = "nosetests -vv --goober "
+        msg = "\"nosetests -vv --goober "
         if self.prefix:
             msg = self.prefix + msg + '--goober-prefix=' + ','.join(self.env_vars) + ' '
         if self.extra_options:
             msg += str(self.extra_options) + ' '
-
+        msg += "\""
         print "YOU SHOULD RE-RUN: "+ msg + ' '.join(problems)
         
