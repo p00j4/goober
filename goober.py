@@ -1,9 +1,7 @@
 #!/usr/bin/env python 
 # -*- coding: utf-8 -*- 
 from nose.plugins.base import Plugin
-from nose.case import Test
 import logging
-import unittest
 import os
 
 log = logging.getLogger(__name__)
