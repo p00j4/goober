@@ -7,5 +7,5 @@ sudo: required
 install: "pip install -r requirements.txt"
 warnings_are_errors: true
 # command to run tests
-script: pyflakes
+script: pyflakes .
 
