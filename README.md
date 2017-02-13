@@ -1,4 +1,4 @@
-goober
+goober [![Build Status](https://travis-ci.org/p00j4/goober.svg?branch=master)](https://travis-ci.org/p00j4/goober)
 ======
 
 Look what just came out of my nose(tests)
